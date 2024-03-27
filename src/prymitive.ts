@@ -7,6 +7,7 @@ class School {
 }
 
 class Direction {
+  private _name: string;
   levels:Level[]  = [];
 
   constructor( name:string ) {
@@ -22,10 +23,13 @@ class Direction {
 }
 
 class Level {
+  private _program:string
+  private _name: string;
+
   groups:Group[] = [];
 
   constructor( name:string,  program:string) {
-    this.name = name;
+    this._name = name;
     this._program = program;
   }
 
@@ -44,6 +48,8 @@ class Level {
 
 class Group {
   _students:Student[] = [];
+  directionName:string
+  levelName:string
 
   constructor(directionName:string, levelName:string) {
     this.directionName = directionName;
