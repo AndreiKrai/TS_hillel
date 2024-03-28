@@ -106,10 +106,10 @@ class Student {
 
     if (gradeValues.length === 0) return 0;
 
-    const averageGrade =
-      gradeValues.reduce((sum:number, grade:number):number => sum + grade, 0) / gradeValues.length;
+    const averageGrade:number =
+      gradeValues.reduce((sum:number, grade:number) => sum + grade, 0) / gradeValues.length;
 
-    const attendancePercentage =
+    const attendancePercentage:number =
       (this.attendance.filter((present:boolean) => present).length /
         this.attendance.length) *
       100;
