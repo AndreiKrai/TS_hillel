@@ -9,6 +9,7 @@ class School {
         this._areas=areas;
         this._lecturers=lectures
     }
+
     get areas():Area[] {
      return this._areas;
     }
@@ -21,24 +22,18 @@ class School {
         this._areas.push(area)
     }
 
-    removeArea(area:Area):void{
-        const index:number = this._areas.findIndex( el => el._name === area._name)
-        if (index >= 0) {
-            this._areas.splice(index,1)            
-        }
-    }
+    removeArea (areaToRemove:Area) : void {
+        this._areas = this._areas.filter(item => item !== areaToRemove);
+        }    
 
     addLecturer(lecturer:lecturer):void{
         this._lecturers.push(lecturer)
     }
 
-    removeLecturer(lecturer:lecturer):void{
-        const index = this._lecturers.findIndex(el => el.name === lecturer.name);
-        if (index >= 0) {
-            this._lecturers.splice(index,1)
-        }
+    removeLecturer (lecturerToRemove:lecturer) : void {
+        this._lecturers = this._lecturers.filter(item => item !== lecturerToRemove);
+        }  
     }
-  }
   
   class Area {
     // implement getters for fields and 'add/remove level' methods
@@ -53,18 +48,18 @@ class School {
     get levels () : Level [] {
         return this._levels
     }
+
     get name () : string {
         return this._name
     }
+
     addLevel (level:Level) : void {
         this._levels.push(level)
     }
-    removeLevel (level:Level) : void {
-        const index = this._levels.findIndex( el => el._name ===level._name)
-        if (index >= 0) {
-            this._levels.splice(index,1)
-        }
-    }
+
+    removeLecturer (levelToRemove:Level) : void {
+        this._levels = this._levels.filter(item => item !== levelToRemove);
+        }  
   }
   
   class Level {
@@ -78,18 +73,26 @@ class School {
       this._description = description;
       this._groups = groups
     }
+
     get groups () : Group[] {
         return this._groups
     }
+
     get name () : string {
         return this._name
     }
+
     get description () : string {
         return this._description
     }
+
     removeGroup (groupToRemove:Group) : void {
         this._groups = this._groups.filter(group => group !== groupToRemove);
-        }    
+        }   
+     
+    addGroup (groupToAdd:Group): void {
+        this._groups.push(groupToAdd)
+    }
     }
 
   
@@ -109,7 +112,10 @@ class School {
       this._status = status;
       this._students = students;
     }
-
+    
+    set status (groupStatus:('active' | 'pending')) {
+        this._status = groupStatus
+    }
     get area () : string {
         return this._area
     }
@@ -131,9 +137,7 @@ class School {
     removeGroup (studentToRemove: Student) : void {
         this._students = this._students.filter(item => item !== studentToRemove );
     }    
-    setStatus (groupStatus:('active' | 'pending')): void {
-        this._status = groupStatus
-    }
+
     showPerformance() :Student [] {
       const sortedStudents = this._students.toSorted((a, b) => b.getPerformanceRating() - a.getPerformanceRating());
       return sortedStudents;
