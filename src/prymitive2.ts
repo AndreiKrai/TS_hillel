@@ -1,7 +1,7 @@
 type lecturer = {name:string, surname:string, position:string, company:string, experience:string, courses:string, contacts:string}
 
 class School {
-    // implement 'add area', 'remove area', 'add lecturer', and 'remove lecturer' methods
+
     _areas:Area[] = [];
     _lecturers:lecturer[] = []; 
   
@@ -112,7 +112,7 @@ class School {
       this._status = status;
       this._students = students;
     }
-    
+
     set status (groupStatus:('active' | 'pending')) {
         this._status = groupStatus
     }
