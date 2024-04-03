@@ -1,39 +1,38 @@
-type lecturer = {name:string, surname:string, position:string, company:string, experience:string, courses:string, contacts:string}
-
+type Lecturer = {name:string, surname:string, position:string, company:string, experience:string, courses:string, contacts:string}
 class School {
-
+    
     _areas:Area[] = [];
-    _lecturers:lecturer[] = []; 
-  
-    constructor(areas:Area[], lectures:lecturer[]){
+    _lecturers:Lecturer[] = []; 
+    
+    constructor(areas:Area[], lectures:Lecturer[]){
         this._areas=areas;
         this._lecturers=lectures
     }
-
+    
     get areas():Area[] {
-     return this._areas;
+        return this._areas;
     }
-  
-    get lecturers():lecturer[] {
-      return this._lecturers;
+    
+    get lecturers():Lecturer[] {
+        return this._lecturers;
     }
-
+    
     addArea(area:Area):void{
         this._areas.push(area)
     }
-
+    
     removeArea (areaToRemove:Area) : void {
         this._areas = this._areas.filter(item => item !== areaToRemove);
-        }    
-
-    addLecturer(lecturer:lecturer):void{
+    }    
+    
+    addLecturer(lecturer:Lecturer):void{
         this._lecturers.push(lecturer)
     }
-
-    removeLecturer (lecturerToRemove:lecturer) : void {
+    
+    removeLecturer (lecturerToRemove:Lecturer) : void {
         this._lecturers = this._lecturers.filter(item => item !== lecturerToRemove);
-        }  
-    }
+    }  
+}
   
   class Area {
     // implement getters for fields and 'add/remove level' methods
@@ -57,7 +56,7 @@ class School {
         this._levels.push(level)
     }
 
-    removeLecturer (levelToRemove:Level) : void {
+    removeLevel (levelToRemove:Level) : void {
         this._levels = this._levels.filter(item => item !== levelToRemove);
         }  
   }
@@ -134,7 +133,7 @@ class School {
     addStudent(student: Student) : void {
         this._students.push(student)
     }
-    removeGroup (studentToRemove: Student) : void {
+    removeStudent (studentToRemove: Student) : void {
         this._students = this._students.filter(item => item !== studentToRemove );
     }    
 
@@ -144,18 +143,17 @@ class School {
     }
 }
   
-type grade = {[workName:string]:number}; //it can be not only 1 key-value up here, how to prevent that???
-type visit = {[lesson: string]:boolean};//it can be not only 1 key-value up here, how to prevent that???
+type Grades = {[workName:string]:number};  
 
 class Student {
     // implement 'set grade' and 'set visit' methods
     _firstName: string;
     _lastName: string;
     _birthYear: number;
-    _grades: grade[] = []; 
-    _visits: visit[] = []; 
+    _grades: Grades
+    _visits: boolean[]
   
-    constructor(firstName: string, lastName: string, birthYear: number, grades:grade[], visits:visit[]) {
+    constructor(firstName: string, lastName: string, birthYear: number, grades:Grades , visits:boolean[]) {
       this._firstName = firstName;
       this._lastName = lastName;
       this._birthYear = birthYear;
@@ -171,33 +169,19 @@ class Student {
       [this._lastName, this._firstName] = value.split(' ');
     }
     
-    set grade (grage:grade){
-        const workName : string = Object.keys(grage)[0]
-        const index :number = this._grades.findIndex(el => Object.keys(el)[0] === workName)
-        if (index >=0) {
-            this._grades[index][workName] = grage[workName]
-        }
-        else{
-            this._grades.push(grage)
-        }
+    set grade (grages:Grades){
+       this._grades={...this._grades, ...grages}
     }
 
-    set visits (visitToSet: visit){
-        const lesson: string = Object.keys(visitToSet)[0];
-        const index: number = this._visits.findIndex( el => Object.keys(el)[0] === lesson)
-        if (index >=0) {
-            this._visits[index][lesson] = visitToSet[lesson]
-        }
-        else{
-            this._visits.push(visitToSet)
-        }
+    set visits (visitToSet: boolean){
+        this._visits.push(visitToSet)
     }
 
     get age():number {
       return new Date().getFullYear() - this._birthYear;
     }
   
-    getPerformanceRating() {
+    getPerformanceRating():number {
       const gradeValues  = Object.values(this._grades);// I see some missunderstand here as _grades seems to be obj but it initialise as []
   
       if (!gradeValues.length) return 0;
@@ -208,3 +192,4 @@ class Student {
       return (averageGrade + attendancePercentage) / 2;
     }
   }
+
