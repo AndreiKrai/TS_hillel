@@ -23,19 +23,18 @@ class Stack  <T> {
 
 interface IObj {[key:string]:any}
 
-class Dictionary <T extends IObj>{
+class Dictionary <T extends object>{
   constructor( private itemArray: Array <T>){}
 
-  get value <K extends keyof T> (key:K): T[K] | undefined {
+  get <T,K extends keyof T> (key:K): T[K] | undefined {
     const foundItem=this.itemArray.find(item=>key in item)
   return foundItem?foundItem[key]:undefined}
-  //  got that err An accessor cannot have type parameters. what to do???
 
-  set value <T extends IObj>(data:T):void{
+  set  <T extends IObj>(data:T):void{
     this.itemArray.push(data)
   }
 
-  
+
 getValue<K extends keyof T>(key: K): T[K] | undefined {
   // Check if the key exists in the itemArray
   const foundItem = this.itemArray.find(item => key in item);
