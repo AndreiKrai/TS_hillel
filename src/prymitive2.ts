@@ -193,7 +193,3 @@ class Student {
     }
   }
 
-  interface С {
-    [identifier: string]: string; // Ok
-    [identifier: number]: string; // Error, має належати до типу string
-  }
