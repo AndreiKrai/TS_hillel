@@ -29,7 +29,7 @@
 // }
 // let a1: keyof Type; // 'publicField' | 'property' | 'instanceMethod'
 
-// //===================LOOKUP TYPES 
+// //===================LOOKUP TYPES
 // interface IUser {
 //     name:string;
 //     age:number
@@ -65,7 +65,7 @@
 // const age= userModel.get('age')// age:number
 // const id =userModel.get('name') //name:string
 
-// ===================MAPPED TYPES 
+// ===================MAPPED TYPES
 // type ABC = 'a' | 'b' |'c';
 // type ABCWithString = {
 //     [K in ABC]:string
@@ -88,6 +88,12 @@
 // type ReadonlyMember <T>={
 //     readonly[P in keyof T]:T[P];
 // };
+// type AddModifiers<T> = {
+//   +readonly [P in keyof T]+?: T[P]; // додасть модифікатори readonly і ?
+// };
+// type RemoveModoifiers<T> = {
+//   -readonly [P in keyof T]-?: T[P]; // видалить модифікатори readonly і ?
+// };
 // type Nullable<T> = {
 //     [P in keyof T]: T[P] | null;
 //   };
@@ -102,5 +108,22 @@
 //   };
 
 // let user: ReadonlyMember<IUser>; // user: { readonly name: string; readonly age: number; }
-// let user1: TPartial<IUser>={name: 'string'}; // user: {  name: string; }ok! all fields is partials (?)
-// let user2: TRequired<IUser>={name: 'string', age:4, isMarried:true} // is married should be!!
+// let user1: TPartial<IUser>={name: 'string'}; // user: {  name: string; }ok! all fields is partials (?)   Partial<IUser>
+// let user2: TRequired<IUser>={name: 'string', age:4, isMarried:true} // is married should be!!            Required<IUser>
+
+// type TRecord <K extends keyof any, T>={
+//     [P in K]:T
+// }
+// interface ICatInfo {
+//     age:number;
+//     breed:string
+// }
+// type CatName ='molly' |'boris'|'leo';                                                                       //Record<CatName,ICatInfo>
+// const cats: TRecord<CatName, ICatInfo> = {
+//     molly: { age: 10, breed: 'Persian' },
+//     boris: { age: 5, breed: 'Maine Coon' },
+//     leo: { age: 16, breed: 'British Shorthair' },
+//   };                                            
+//   cats.leo.age
+
+//  let cats1:Record<CatName,ICatInfo>
