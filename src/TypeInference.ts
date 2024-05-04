@@ -75,15 +75,15 @@
 
 // type MappedType<T> = {
 //     [K in keyof T]:T[K]
-// // };
+// };
 // interface IUser {
 //     name:string;
 //     age:number
 //     isMarried:boolean
 // };
-// // const x:MappedType<IUser>={
-// //     age:42,name:'John'
-// // }
+// const x1:MappedType<IUser>={
+//     age:42,name:'John'
+// }
 
 // type ReadonlyMember <T>={
 //     readonly[P in keyof T]:T[P];
