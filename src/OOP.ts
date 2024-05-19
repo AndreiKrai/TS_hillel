@@ -1,4 +1,3 @@
-
 // ==============
 // Вам необхідно написати додаток Todo list. У списку нотаток повинні бути методи для додавання нового запису,
 // видалення, редагування та отримання повної інформації про нотатку за ідентифікатором,
@@ -16,74 +15,75 @@ enum NoteStatus {
 }
 
 class Note {
-    constructor(
-      protected _name: string,
-      protected _content: string,
-      readonly _createdAt: number,
-      protected _changedAt: number,
-      protected _status: NoteStatus
-    ) {}
-  
-    get name(): string {
-      return this._name;
-    }
-    get content(): string {
-      return this._content;
-    }
-    get changedAt(): number {
-      return this._changedAt;
-    }
-    get status(): NoteStatus {
-      return this._status;
-    }
-  
-    editName(name: string): void {
-      this._name = name;
-      this.updateChangedAt();
-    }
-    editContent(content: string): void {
-      this._content = content;
-      this.updateChangedAt();
-    }
-    editStatus(status: NoteStatus): void {
-      this._status = status;
-      this.updateChangedAt();
-    }
-  
-    private updateChangedAt(): void {
-      this._changedAt = Date.now();
-    }
+  constructor(
+    protected _name: string,
+    protected _content: string,
+    protected readonly _createdAt: number,
+    protected _changedAt: number,
+    protected _status: NoteStatus
+  ) {}
+
+  get name(): string {
+    return this._name;
   }
+  get content(): string {
+    return this._content;
+  }
+  get changedAt(): number {
+    return this._changedAt;
+  }
+  get createdAt(): number {
+    return this._createdAt;
+  }
+  get status(): NoteStatus {
+    return this._status;
+  }
+  editName(name: string): void {
+    this._name = name;
+    this.updateChangedAt();
+  }
+  editContent(content: string): void {
+    this._content = content;
+    this.updateChangedAt();
+  }
+  editStatus(status: NoteStatus): void {
+    this._status = status;
+    this.updateChangedAt();
+  }
+  private updateChangedAt(): void {
+    this._changedAt = Date.now();
+  }
+}
 
 class NoteWithConfirmation extends Note {
   constructor(
     protected _name: string,
     protected _content: string,
-    readonly _createdAt: number,
+    protected readonly _createdAt: number,
     protected _changedAt: number,
     protected _status: NoteStatus
   ) {
     super(_name, _content, _createdAt, _changedAt, _status);
   }
-//   in that class we have to override all setters with confirmEdit(), i will write only one as example
-//  Maxim, can we use decorators for that?
+  //   in that class we have to override all setters with confirmEdit(), i will write only one as example
   override editName(name: string): void {
     if (this.confirmEdit()) {
       super.editName(name);
     }
   }
-
-  private confirmEdit(): boolean {
+  confirmEdit(): boolean {
     // some confirm logic
-    return true
+    return true;
   }
-
 }
 
 type AllNotesTypes = Note | NoteWithConfirmation;
+function isNoteWithConfirmation(note: Note | NoteWithConfirmation): note is NoteWithConfirmation {
+  return (note as NoteWithConfirmation).editContent !== undefined;
+}
 
 class NoteList {
-  private _list: AllNotesTypes[] = [];
+  protected _list: AllNotesTypes[] = [];
   get list() {
     return this._list;
   }
@@ -97,10 +97,10 @@ class NoteList {
   editNote(name: string, updatedContent: string): void {
     const note = this._list.find(n => n.name === name);
     if (note) {
-      if (note instanceof Note) {
-        (note as Note).editContent(updatedContent);
+      if (isNoteWithConfirmation(note)) {
+        (note as NoteWithConfirmation).editContent(updatedContent);
       } else {
-        (note as NoteWithConfirmation).editContent(updatedContent)
+        (note as Note).editContent(updatedContent);
       }
     }
   }
@@ -113,24 +113,35 @@ class NoteList {
     return this._list.filter(n => n.status === NoteStatus.active).length;
   }
 
-  getNote(key: 'name' | 'content', value: string): Note[] {
+  getNote<T extends keyof Note>(key: T, value: Note[T]): AllNotesTypes[] {
     return this._list.filter(n => n[key] === value);
   }
+}
+type NoteSearchKey = 'name' | 'content';
+class NoteListWithExraSearch extends NoteList {
+  constructor() {
+    super();
+  }
 
+  // override getNote(key: 'name' | 'content', value: string): AllNotesTypes[] {
+  //   return this._list.filter(n => n[key] === value);
+  // }
+  getNoteByNameContext<T extends NoteSearchKey>(key: T, value: string): AllNotesTypes[] {
+    return this._list.filter(n => n[key] === value);
+  }
   sortNotes(sortBy: 'status' | 'createdAt'): void {
     switch (sortBy) {
       case 'status':
         this._list.sort((a, b) => a.status.localeCompare(b.status));
         break;
       case 'createdAt':
-        this._list.sort((a, b) => a._createdAt - b._createdAt);
+        this._list.sort((a, b) => a.createdAt - b.createdAt);
         break;
       default:
         break;
     }
   }
 }
-
 const cleanRoom: Note = new Note('leavingroom', 'clean room', Date.now(), Date.now(), NoteStatus.active);
 const toDoList: NoteList = new NoteList();
 toDoList.addNode(cleanRoom);
