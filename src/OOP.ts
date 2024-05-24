@@ -79,7 +79,8 @@ class NoteWithConfirmation extends Note {
 
 type AllNotesTypes = Note | NoteWithConfirmation;
 function isNoteWithConfirmation(note: Note | NoteWithConfirmation): note is NoteWithConfirmation {
-  return (note as NoteWithConfirmation).editContent !== undefined;
+  // return (note as NoteWithConfirmation).editContent !== undefined; -usecase for typealias and interfaces
+  return  note instanceof NoteWithConfirmation //usecase for classes
 }
 
 class NoteList {
@@ -98,9 +99,9 @@ class NoteList {
     const note = this._list.find(n => n.name === name);
     if (note) {
       if (isNoteWithConfirmation(note)) {
-        (note as NoteWithConfirmation).editContent(updatedContent);
+        (note).editContent(updatedContent); //noteWithConfirmation
       } else {
-        (note as Note).editContent(updatedContent);
+        (note).editContent(updatedContent);
       }
     }
   }
