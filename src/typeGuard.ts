@@ -1,3 +1,20 @@
+// interface Cat {
+//   meow(): void;
+// }
+// interface Dog {
+//   bark(): void;
+// }
+// function isCat(pet: Dog | Cat): pet is Cat {
+//   return (pet as Cat).meow !== undefined;
+// }
+// let pet: Dog | Cat;
+// // Using the 'is' keyword
+// if (isCat(pet)) {
+//   pet.meow();
+// } else {
+//   pet.bark();
+// }
+// ============================
 interface ICompany {
   name: string;
   departments: [];
@@ -60,3 +77,4 @@ class PrevHiredEmployee implements IPrevHiredEmployee {
         public  salary: string,
         public   cardNumber: number){}
 }
+// 
