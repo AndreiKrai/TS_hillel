@@ -146,3 +146,5 @@ class NoteListWithExraSearch extends NoteList {
 const cleanRoom: Note = new Note('leavingroom', 'clean room', Date.now(), Date.now(), NoteStatus.active);
 const toDoList: NoteList = new NoteList();
 toDoList.addNode(cleanRoom);
+
+// SOLID
